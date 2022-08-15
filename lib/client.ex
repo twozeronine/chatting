@@ -4,6 +4,7 @@ defmodule Chatting.Client do
   end
 
   def loop(server_pid, state \\ :connect)
+
   def loop(server_pid, :msg) do
     receive do
       {:msg, msg} ->
@@ -11,6 +12,7 @@ defmodule Chatting.Client do
         loop(server_pid, :broad_cast)
     end
   end
+
   def loop(server_pid, :broad_cast) do
     receive do
       {:broad_cast, msg} ->
@@ -18,8 +20,8 @@ defmodule Chatting.Client do
         loop(server_pid, :msg)
     end
   end
-  def loop(server_pid, state)
-  do
+
+  def loop(server_pid, state) do
     send(server_pid, {state, self()})
     loop(server_pid, :msg)
   end
